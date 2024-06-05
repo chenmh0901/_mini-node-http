@@ -2,8 +2,8 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const marked = require('marked');
 const cors = require('cors');
+const formidable = require('formidable');
 
 const app = express();
 
@@ -24,8 +24,7 @@ app.get('/notes/:noteName', (req, res) => {
     if (err) {
       res.status(404).send('Not Found');
     } else {
-      const html = marked(data);
-      res.send(html);
+      res.send(data);
     }
   });
 });
@@ -38,9 +37,9 @@ app.post('/notes', (req, res, next) => {
       next(err);
       return;
     }
-
-    const oldPath = path.join(form.uploadDir, files.portrait[0].newFilename);
-    const newPath = path.join(form.uploadDir, files.portrait[0].originalFilename);
+    console.log(files)
+    const oldPath = path.join(form.uploadDir, files.details[0].newFilename);
+    const newPath = path.join(form.uploadDir, files.details[0].originalFilename);
     console.log(oldPath, newPath);
     fs.rename(oldPath, newPath, err => {
       if (err) {
@@ -49,7 +48,7 @@ app.post('/notes', (req, res, next) => {
       }
 
       console.log(files);
-      const url = '/notes/' + files.portrait[0].originalFilename;
+      const url = '/notes/' + files.details[0].originalFilename;
       res.send(url);
     });
   });

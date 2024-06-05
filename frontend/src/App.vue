@@ -1,19 +1,15 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-
-const html = ref();
-
+import { baseURL, useHttp } from './utils/http.js'
 const files = ref([]);
-
+const postUrl = baseURL + 'notes'
 const fetchFiles = async () => {
-  // fetch files from server
   try {
-    // 124.223.35.249
-    const response = await fetch('http://124.223.35.249:3001/notes');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const option = {
+      method: 'GET',
+      url: 'notes'
     }
-    const data = await response.json();
+    const { data } = await useHttp(option);
     files.value = data;
   } catch (e) {
     console.log(e)
@@ -22,12 +18,12 @@ const fetchFiles = async () => {
 
 const getFiles = async (fileName) => {
   try {
-    const response = await fetch(`http://localhost:3001/notes/${fileName}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const option = {
+      method: 'GET',
+      url: `notes/${fileName}`
     }
-    const data = await response.json();
-    console.log(data);
+    const { data } = await useHttp(option);
+    files.value = data;
   } catch (e) {
     console.log(e)
   }
@@ -37,8 +33,8 @@ onMounted(fetchFiles)
 
 <template>
   <h2>上传文件</h2>
-  <form>
-    文件：<input type="file" />
+  <form :action=postUrl method="post" enctype="multipart/form-data">
+    文件：<input type="file" name="details" />
     <hr />
     <button type="submit">提交</button>
   </form>
