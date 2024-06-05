@@ -37,17 +37,13 @@ app.post('/notes', (req, res, next) => {
       next(err);
       return;
     }
-    console.log(files)
     const oldPath = path.join(form.uploadDir, files.details[0].newFilename);
     const newPath = path.join(form.uploadDir, files.details[0].originalFilename);
-    console.log(oldPath, newPath);
     fs.rename(oldPath, newPath, err => {
       if (err) {
         next(err);
         return;
       }
-
-      console.log(files);
       const url = '/notes/' + files.details[0].originalFilename;
       res.send(url);
     });
