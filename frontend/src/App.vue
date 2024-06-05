@@ -5,24 +5,24 @@ const files = ref([]);
 const postUrl = baseURL + 'notes'
 const fetchFiles = async () => {
   try {
-    const option = {
+    const options = {
       method: 'GET',
       url: 'notes'
     }
-    const { data } = await useHttp(option);
+    const { data } = await useHttp(options);
     files.value = data;
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
 };
 
 const getFiles = async (fileName) => {
   try {
-    const option = {
+    const options = {
       method: 'GET',
       url: `notes/${fileName}`
     }
-    const { data } = await useHttp(option);
+    const { data } = await useHttp(options);
     files.value = data;
   } catch (e) {
     console.log(e)

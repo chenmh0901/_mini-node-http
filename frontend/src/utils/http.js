@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://localhost:3001/';
+export const baseURL = import.meta.env.VITE_BASE_URL;
 export function useHttp(options) {
   const config = {
     method: options.method,
